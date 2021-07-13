@@ -1,11 +1,10 @@
-import os
 import pygame
-import random
 from MainVar import MainVar
-from MainWindow import MainWindow
 from RedrawWindow import RedrawWindow
 from Dino import Dino
 from Events import Events
+from Floor import Floor
+from Enemy import Enemy
 
 
 pygame.font.init()
@@ -14,6 +13,10 @@ pygame.font.init()
 def Main():
 
     dino = Dino()
+    floor1 = Floor()
+    floor2 = Floor()
+    floor2.setX(floor1.img.get_width())
+    floors = [floor1, floor2]
 
     while MainVar.run:
         MainVar.clock.tick(MainVar.fps)
@@ -21,7 +24,10 @@ def Main():
         Events.dino_jump(events, dino, MainVar.fps)
         dino.sprinting()
         Events.quit_game(events)
-        RedrawWindow.redraw_window(dino)
+        for floor in floors:
+            floor.move()
+        floor1.moveAFloor(floors)
+        RedrawWindow.redraw_window(dino, floors)
 
 
 if __name__ == "__main__":
